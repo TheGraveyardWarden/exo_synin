@@ -24,7 +24,7 @@ const create_chat_box = (avatar, username, last_msg, type = 'pv') => {
     chat_box_con.innerHTML += `
         <div data-type=${type} class="m_flex_row_spcbtw m_chat_box full_width mb-3 m_pointer">
              <div class="m_flex_row_start">
-                <img alt="his_profile" src="http://localhost:8888/files/get-user-avatar/${avatar}" class="profile_pic" />
+                <img alt="his_profile" src="http://5.75.196.210:8888/files/get-user-avatar/${avatar}" class="profile_pic" />
                 <div class="m_flex_col_start m_align_def m_chat_box_info">
                     <p class="m_chat_name">${username}</p>
                     <p class="m_chat_last_msg">${last_msg}</p>
@@ -116,7 +116,7 @@ const handle_msg = ({text, _id}, user, avatar) => {
     chats.innerHTML += `<div data-id=${_id} id=${_id} class="m_flex_row_start m_align_end m_chat_con">
         <div class="m_flex_col_cen" style="align-items: flex-start">
             <p class="m_from">${user}</p>
-            <img alt="user" onclick=${`show_info("${user}")`} src="http://localhost:8888/files/get-user-avatar/${avatar}" class="profile_pic" />
+            <img alt="user" onclick=${`show_info("${user}")`} src="http://5.75.196.210:8888/files/get-user-avatar/${avatar}" class="profile_pic" />
         </div>
         <div class="m_flex_col_cen m_chat_text m_align_end">
         <p>${text}</p>
@@ -201,7 +201,7 @@ socket.on('msg', data => {
         t.style.display = 'block';
         t.innerHTML = `
             <div class="toast-header m_alert_info">
-                <img style='width: 50px; height: 50px;' src="http://localhost:8888/files/get-user-avatar/${avatar}" class="rounded me-2" alt="...">
+                <img style='width: 50px; height: 50px;' src="http://5.75.196.210:8888/files/get-user-avatar/${avatar}" class="rounded me-2" alt="...">
                 <strong class="me-auto">${sender}${is_gp ? ` (${gp_name})` : ""}</strong>
                 <small>11 mins ago</small>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> -->

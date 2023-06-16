@@ -80,7 +80,7 @@
         <form name="update_profile" method="POST" enctype="multipart/form-data" action="/update/user">
           <input name="file" class="hidden_file_inp visually-hidden" accept=".png, .jpg, .jpeg" type="file" />
           <div class="m_image_upload_con">
-            <img alt="my_profile" src="http://localhost:8888/files/get-user-avatar/{{user_info['avatar']}}" name="my_own_profile_pic" class="profile_pic m_profile_lg mb-3" />
+            <img alt="my_profile" src="http://5.75.196.210:8888/files/get-user-avatar/{{user_info['avatar']}}" name="my_own_profile_pic" class="profile_pic m_profile_lg mb-3" />
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload m_upload_prof" viewBox="0 0 16 16">
               <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
               <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
@@ -152,7 +152,7 @@
       </div>
       <div class="m_flex_col_cen">
         <p class="my_name text-truncate mb-3">{{ user_info['username'] }}</p>
-        <img alt="my_profile" src="http://localhost:8888/files/get-user-avatar/{{user_info['avatar']}}" class="profile_pic" name="my_profile" />
+        <img alt="my_profile" src="http://5.75.196.210:8888/files/get-user-avatar/{{user_info['avatar']}}" class="profile_pic" name="my_profile" />
       </div>
     </div>
     <div class="m_messages">
@@ -177,7 +177,7 @@
         {% for i in pv_info %}
         <div data-type="pv" class="m_flex_row_spcbtw m_chat_box full_width mb-3 m_pointer">
           <div class="m_flex_row_start">
-            <img alt="his_profile" src="http://localhost:8888/files/get-user-avatar/{{i[2]}}" class="profile_pic" />
+            <img alt="his_profile" src="http://5.75.196.210:8888/files/get-user-avatar/{{i[2]}}" class="profile_pic" />
             <div class="m_flex_col_start m_align_def m_chat_box_info">
               <p class="m_chat_name">{{i[0]}}</p>
               <p class="m_chat_last_msg">{{i[1]}}</p>
@@ -196,7 +196,7 @@
         {% for i in gp_info %}
         <div data-type="gp" class="m_flex_row_spcbtw m_chat_box full_width mb-3 m_pointer">
           <div class="m_flex_row_start">
-            <img alt="his_profile" src="http://localhost:8888/files/get-group-avatar/{{i[2]}}" class="profile_pic" />
+            <img alt="his_profile" src="http://5.75.196.210:8888/files/get-group-avatar/{{i[2]}}" class="profile_pic" />
             <div class="m_flex_col_start m_align_def m_chat_box_info">
               <p class="m_chat_name">{{i[0]}}</p>
               <p class="m_chat_last_msg">{{i[1]}}</p>
