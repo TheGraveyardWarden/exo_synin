@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Synin</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- socket loading -->
+    <div class="m_socket_loading">
+      <?xml version="1.0" encoding="utf-8"?>
+      <svg class="m_loading" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <path fill="none" stroke="#406ae0" stroke-width="8" stroke-dasharray="42.76482137044271 42.76482137044271" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z" stroke-linecap="round" style="transform:scale(0.8);transform-origin:50px 50px">
+          <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0;256.58892822265625"></animate>
+        </path>
+      </svg>
+    </div>
+    <!--  -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show m_absolute_alert m_alert_{{ category }}" role="alert">
+          {{ message }}
+          <!-- <button type="button" class="btn-close text-danger" data-bs-dismiss="alert" aria-label="Close"></button> -->
+          <svg class="bi bi-x-lg btn-close text-{{category}}" style="--bs-btn-close-bg: none!important;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" data-bs-dismiss="alert" aria-label="Close" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+          </svg>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <!--  -->
+    <!-- create new chat popup -->
+    <div class="m_profile_popup_con visually-hidden" name="new_chat_popup">
+      <div class="m_create_new_chat_popup m_absolute_center">
+        <!-- context selector -->
+        <div class="m_context_selector">
+          <p data-name="0" class="m_context_selected">chat</p>
+          <p data-name="1">group</p>
+          <p data-name="2">channel</p>
+        </div>
+        <!-- end of context selector -->
+        <!-- chat context -->
+        <div name="context" class="m_chat_context">
+          <h1 style="margin: 1rem; color: white; font-size: 30px; font-weight: bold;">Who do u wanna text to?</h1>
+          <div class="form-floating m_form_posing mb-3" style="margin: 1rem auto!important;">
+            <input name="create_chat_username" type="text" class="form-control m_inp" id="floatingInputValue" placeholder="Enter his name here">
+            <label for="floatingInputValue">Enter his name here</label>
+          </div>
+          <div class="form-floating m_form_posing mb-3" style="margin: 1rem auto!important;">
+            <input name="create_chat_message" type="text" class="form-control m_inp" id="floatingInputValue" placeholder="Enter message">
+            <label for="floatingInputValue">Enter message</label>
+          </div>
+          <button type="button" name="create_chat_btn" class="btn btn-primary">Text</button>
+        </div>
+        <!-- end of chat context -->
+        <!-- group context -->
+        <div name="context" class="m_group_context visually-hidden">
+          <h1 style="margin: 1rem; color: white; font-size: 30px; font-weight: bold;">You wanna create a group?</h1>
+          <div class="form-floating m_form_posing mb-3" style="margin: 1rem auto!important;">
+            <input name="create_group_name" type="text" class="form-control m_inp" id="floatingInputValue" placeholder="Enter group name">
+            <label for="floatingInputValue">Enter group name</label>
+          </div>
+          <div class="form-floating m_form_posing mb-3" style="margin: 1rem auto!important;">
+            <input name="create_group_description" type="text" class="form-control m_inp" id="floatingInputValue" placeholder="Enter group description">
+            <label for="floatingInputValue">Enter group description</label>
+          </div>
+          <button type="button" name="create_group_btn" class="btn btn-primary">Create</button>
+        </div>
+        <!-- end of group context -->
+      </div>
+    </div>
+    <!--  -->
+    <!-- profile popup -->
+    <div class="m_profile_popup_con visually-hidden" name="my_profile_popup">
+      <div class="m_absolute_center m_profile_popup">
+        <h1 style="margin: 1rem; color: white; font-size: 30px; font-weight: bold;">Edit your profile</h1>
+        <form name="update_profile" method="POST" enctype="multipart/form-data" action="/update/user">
+          <input name="file" class="hidden_file_inp visually-hidden" accept=".png, .jpg, .jpeg" type="file" />
+          <div class="m_image_upload_con">
+            <img alt="my_profile" src="http://localhost:8888/files/get-user-avatar/{{user_info['avatar']}}" name="my_own_profile_pic" class="profile_pic m_profile_lg mb-3" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload m_upload_prof" viewBox="0 0 16 16">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+            </svg>
+          </div>
+          <div class="form-floating m_form_posing mb-3">
+            <input name="username" type="text" class="form-control m_inp" id="floatingInputValue" placeholder="Username" value="{{user_info['username']}}">
+            <label for="floatingInputValue">Username</label>
+          </div>
+          <div class="form-floating m_form_posing mb-3">
+            <input name="password" type="password" class="form-control m_inp" id="floatingInputValue" placeholder="Password" value="">
+            <label for="floatingInputValue">Change Password</label>
+          </div>
+          <div class="form-floating m_form_posing mb-3">
+            <textarea name="bio" style="min-height: 100px;" class="form-control m_inp" placeholder="Tell us about yourself..." id="floatingTextarea">{{user_info['bio']}}</textarea>
+            <label for="floatingTextarea">Bio</label>
+          </div>
+          <!--  -->
+                    <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary mb-3" onclick="on_save_click()" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Save
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content m_save_modal">
+                <div class="modal-header m_save_modal">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Save Changes</h1>
+                  <svg class="bi bi-x-lg btn-close text-info" style="--bs-btn-close-bg: none!important;" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" data-bs-dismiss="modal" aria-label="Close" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                  </svg>
+                </div>
+                <div class="modal-body m_save_modal" style="text-align: left;">
+                  Do you want to apply changes and update your profile?
+                </div>
+                <div class="modal-footer m_save_modal">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-info">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            const on_save_click = () => {
+              document.querySelector('.modal-backdrop').style.display = 'none';
+            }
+          </script>
+          <!--  -->
+        </form>
+      </div>
+    </div>
+    <!-- end profile popup -->
+    <div class="m_nav">
+      <div class="m_flex_col_cen m_logo">
+        <h1>Synin</h1>
+      </div>
+      <div class="m_flex_col_cen m_nav_icons">
+        <div class="m_flex_col_cen m_nav_svg_con"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+          <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+        </svg></div>
+        <div class="m_flex_col_cen m_nav_svg_con m_nav_svg_con_selected"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+        </svg></div>
+        <div class="m_flex_col_cen m_nav_svg_con" name="logout"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+          <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+        </svg></div>
+      </div>
+      <div class="m_flex_col_cen">
+        <p class="my_name text-truncate mb-3">{{ user_info['username'] }}</p>
+        <img alt="my_profile" src="http://localhost:8888/files/get-user-avatar/{{user_info['avatar']}}" class="profile_pic" name="my_profile" />
+      </div>
+    </div>
+    <div class="m_messages">
+      <div class="m_flex_row_spcbtw full_width mb-3">
+        <div class="m_flex_row_spcbtw">
+          <p class="m_messages_header">Messages</p>
+          <div class="m_notif_number visually-hidden" style="transform: translate(0, 2px);">0</div>
+        </div>
+        <div class="m_flex_row_spcbtw m_pointer m_create_new_chat">
+          <p class="m_text_muted m_plus">+</p>
+          <p class="m_text_muted">Create new chat</p>
+        </div>
+      </div>
+      <div class="m_search_box m_flex_row_start full_width mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-search m_search m_pointer" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+        <input type="text" class="m_search_inp" placeholder="Search by Keyword" />
+      </div>
+      <div class="m_flex_col_start m_chat_box_con full_width">
+        <!------------------------------------------------------------------------------- each chat box -->
+        {% for i in pv_info %}
+        <div data-type="pv" class="m_flex_row_spcbtw m_chat_box full_width mb-3 m_pointer">
+          <div class="m_flex_row_start">
+            <img alt="his_profile" src="http://localhost:8888/files/get-user-avatar/{{i[2]}}" class="profile_pic" />
+            <div class="m_flex_col_start m_align_def m_chat_box_info">
+              <p class="m_chat_name">{{i[0]}}</p>
+              <p class="m_chat_last_msg">{{i[1]}}</p>
+            </div>
+          </div>
+          <div class="m_flex_col_start m_align_end">
+            <p class="m_text_muted m_chat_box_date" style="margin-bottom: 5px!important;">15 min ago</p>
+            {% if i[3] == 0 %}
+              <div class="m_notif_number m_chat_box_notif" style="display: none;">{{i[3]}}</div>
+            {% else %}
+              <div class="m_notif_number m_chat_box_notif">{{i[3]}}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+        {% for i in gp_info %}
+        <div data-type="gp" class="m_flex_row_spcbtw m_chat_box full_width mb-3 m_pointer">
+          <div class="m_flex_row_start">
+            <img alt="his_profile" src="http://localhost:8888/files/get-group-avatar/{{i[2]}}" class="profile_pic" />
+            <div class="m_flex_col_start m_align_def m_chat_box_info">
+              <p class="m_chat_name">{{i[0]}}</p>
+              <p class="m_chat_last_msg">{{i[1]}}</p>
+            </div>
+          </div>
+          <div class="m_flex_col_start m_align_end">
+            <p class="m_text_muted m_chat_box_date" style="margin-bottom: 5px!important;">15 min ago</p>
+            {% if i[3] == 0 %}
+              <div class="m_notif_number m_chat_box_notif" style="display: none;">{{i[3]}}</div>
+            {% else %}
+              <div class="m_notif_number m_chat_box_notif">{{i[3]}}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+        <!------------------------------------------------------------------------------- end of each chat box -->
+      </div>
+    </div>
+    <div class="m_chats_con m_flex_col_start">
+      <div class="m_chats_header_con m_flex_row_spcbtw full_width">
+        <div class="m_flex_row_start" name="selected_profile_info">
+          <img alt="his_profile" src="{{ url_for('static', filename='/media/Untitled.jpg') }}" class="profile_pic" name="header_prof" />
+          <div class="m_flex_col_start m_align_def m_chat_box_info">
+            <p data-type="user" class="m_chat_name" name="header_name">Dariene Robertson</p>
+            <p class="m_chat_last_msg m_color_white" name="header_last_seen">Last seen today at 17:30</p>
+          </div>
+        </div>
+        <div class="m_flex_row_spcbtw m_chats_header_icons">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+          </svg>
+          <div class="m_options"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg></div>
+          <!--  -->
+          <div class="dropdown">
+            <ul class="dropdown-menu m_dd visually-hidden" style="display: block;position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 15px);">
+              <li><button class="dropdown-item add_member_btn" type="button">Add member</button></li>
+            </ul>
+          </div>
+          <!--  -->
+        </div>
+      </div>
+      <div class="m_chats full_width">  
+      <?xml version="1.0" encoding="utf-8"?>
+      <svg class="m_loading" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: transparent; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+      <path fill="none" stroke="#406ae0" stroke-width="8" stroke-dasharray="42.76482137044271 42.76482137044271" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z" stroke-linecap="round" style="transform:scale(0.8);transform-origin:50px 50px">
+        <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="1s" keyTimes="0;1" values="0;256.58892822265625"></animate>
+      </path>
+      <!-- [ldio] generated by https://loading.io/ --></svg>
+        <!-- chats come here -->
+        <!----------------------------------------------------------- each chat -->
+        <!-- <div class="m_flex_row_start m_align_end m_chat_con">
+          <img alt="user" src="{{ url_for('static', filename='/media/top.jpg') }}" class="profile_pic" />
+          <div class="m_flex_col_cen m_chat_text m_align_end">
+            <p>wassap bro..<br/>ye i got this shitye i got this shitye i got this shitye i got this shit</p>
+            <p class="m_text_muted" style="color: #4f4a79!important;">10:28 AM</p>
+          </div>
+        </div> -->
+        <!----------------------------------------------------------- end of each chat -->
+      </div>
+      <div class="m_msg_input m_flex_row_spcbtw">
+        <div class="m_upload_viewer visually-hidden">
+          <img alt="upload viewer" src="" class="m_upload_viewer_img" />
+          <p class="m_upload_viewer_title">say something</p>
+          <div class="m_close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="m_flex_row_start m_msg_inp_con full_width">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-paperclip file_input" viewBox="0 0 16 16">
+            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+          </svg>
+          <input type="text" class="m_text_inp" placeholder="Enter a message..." />
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-send-fill send_btn" viewBox="0 0 16 16">
+          <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+        </svg>
+      </div>
+    </div>
+    <!--  -->
+    <div class="m_toast_con"></div>
+    <!--  -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.6.0/dist/socket.io.min.js"></script>
+    <script>
+      let socket = io();
+      let is_edit = false;
+      let m_id = undefined;
+      let exo_q = 4;
+      let exo_input = false;
+    </script>
+    <script src="{{url_for('static', filename='js/index.js')}}"></script>
+    <script src="{{url_for('static', filename='js/client.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </body>
+</html>

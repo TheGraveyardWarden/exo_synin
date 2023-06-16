@@ -1,0 +1,112 @@
+/*
+    Dark Blue
+    #202443
+
+    Navy Blue
+    #000C66
+
+    Blue
+    #0000FF
+
+    Baby Blue
+    #406ae0
+*/
+
+/* 
+    background #202443
+    sky blue   #406ae0
+    overlay    #252849
+    icons      #4f4a79
+    red        #ec5566
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    height: 100%;
+    background-color: #202443!important;
+    color: #406ae0!important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.m_flex {
+    display: flex;
+}
+
+.ja_center {
+    justify-content: center;
+    align-items: center;
+}
+
+.fdirect_col {
+    flex-direction: column;
+}
+
+.m_title {
+    font-weight: bolder;
+    color: #406ae0!important;
+}
+
+.full_width {
+    width: 100%!important;
+}
+
+.m_bg_transparent {
+    background-color: transparent!important;
+}
+
+input {
+    color: #406ae0!important;
+    background-color: #252849!important;
+}
+
+.m_inp_border {
+    border: 1px solid #406ae0!important;
+}
+
+.btn-outline-default {
+    --bs-btn-color: #406ae0!important;
+    --bs-btn-border-color: #406ae0!important;
+    --bs-btn-hover-color: #000!important;
+    --bs-btn-hover-bg: #406ae0!important;
+    --bs-btn-hover-border-color: #406ae0!important;
+    --bs-btn-focus-shadow-rgb: 255,193,7!important;
+    --bs-btn-active-color: #000!important;
+    --bs-btn-active-bg: #406ae0!important;
+    --bs-btn-active-border-color: #406ae0!important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)!important;
+    --bs-btn-disabled-color: #406ae0!important;
+    --bs-btn-disabled-bg: transparent!important;
+    --bs-btn-disabled-border-color: #406ae0!important;
+    --bs-gradient: none;
+}
+
+.m_alert_success {
+    min-width: 300px;
+    color: #75b798!important;
+    background-color: #051b11!important;
+    border-color: #0f5132!important;
+}
+
+.m_alert_danger {
+    min-width: 300px;
+    color: #ea868f!important;
+    background-color: #2c0b0e!important;
+    border-color: #842029!important;
+}
+
+.m_alert_info {
+    min-width: 300px;
+    color: #6edff6!important;
+    background-color: #032830!important;
+    border-color: #087990!important;
+}
